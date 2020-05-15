@@ -1,12 +1,12 @@
-package com.example.consumer;
+package com.example.producer;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class Controller {
+public class ProducerController {
   @GetMapping("/hello")
   public String hello() {
-    return "Hello Consumer";
+    return "Hello Producer";
   }
 }
