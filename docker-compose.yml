@@ -16,3 +16,5 @@ services:
 
   redis:
     image: "redis:alpine"
+    ports:
+      - 9379:6379
