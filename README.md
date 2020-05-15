@@ -1,5 +1,10 @@
 ## Redis-backed Distributed Job Queue w/ Rate Limiter
 
+A proof-of-concept to show how redis is a viable option for the following use case:
+
+- distributed queue / job scheduler
+- rate limited outgoing calls
+
 [WORK IN PROGRESS]
 
 - Pending addition of [Rate Limiter](https://www.javadoc.io/doc/org.redisson/redisson/3.10.6/org/redisson/api/RRateLimiter.html)
