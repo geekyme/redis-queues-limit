@@ -35,3 +35,8 @@ Poll for a job:
 curl --request POST \
   --url http://localhost:8081/pollJob/airasia
 ```
+
+View analytics on `http://localhost:3000`:
+
+1. Login with default credentials = admin/admin
+2. Select dashboard (Airasia execution rate)
