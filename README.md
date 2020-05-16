@@ -7,10 +7,8 @@ A proof-of-concept to show how redis is a viable option for the following use ca
 
 [WORK IN PROGRESS]
 
-- Pending addition of [Rate Limiter](https://www.javadoc.io/doc/org.redisson/redisson/3.10.6/org/redisson/api/RRateLimiter.html)
-- Pending addition of [Grafana](https://grafana.com/docs/grafana/latest/installation/docker/) to check the outgoing rates
-- Pending addition of [pumba](https://github.com/alexei-led/pumba) to simulate failures
 - Pending addition of [karate](https://intuit.github.io/karate/karate-gatling/) for load tests
+- Pending addition of [pumba](https://github.com/alexei-led/pumba) to simulate failures
 
 ### Setup
 
