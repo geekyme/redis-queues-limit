@@ -9,12 +9,15 @@ group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
+ext['micrometer.version'] = '1.5.1'
+
 repositories {
 	mavenCentral()
 }
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+  implementation 'org.springframework.boot:spring-boot-starter-actuator'
   implementation 'org.redisson:redisson-spring-boot-starter:3.12.5'
   implementation 'io.micrometer:micrometer-registry-prometheus:1.5.1'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
