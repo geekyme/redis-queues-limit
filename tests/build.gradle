@@ -10,6 +10,7 @@ buildscript {
 
 plugins {
     id 'java'
+    id 'scala'
 }
 
 ext {
@@ -17,10 +18,12 @@ ext {
 }
 
 dependencies {
-    testCompile 'org.junit.jupiter:junit-jupiter-api:5.4.2'
-    testCompile "com.intuit.karate:karate-junit5:${karateVersion}"
-    testCompile "com.intuit.karate:karate-apache:${karateVersion}"
-    testCompile "net.masterthought:cucumber-reporting:3.8.0"
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.4.2'
+    testImplementation "com.intuit.karate:karate-junit5:${karateVersion}"
+    testImplementation "com.intuit.karate:karate-apache:${karateVersion}"
+    testImplementation "net.masterthought:cucumber-reporting:3.8.0"
+    testImplementation "com.intuit.karate:karate-gatling:${karateVersion}"
+    testImplementation "net.masterthought:cucumber-reporting:3.8.0"
 }
 
 sourceSets {
@@ -28,6 +31,7 @@ sourceSets {
         resources {
             srcDir file('src/test/java')
             exclude '**/*.java'
+            exclude '**/*.scala'
         }
     }
 }
@@ -44,6 +48,23 @@ task testReport {
     ReportBuilder reportBuilder = new ReportBuilder(jsonPaths, config)
     reportBuilder.generateReports()
     println "Report is generated at file://$config.reportDirectory.absolutePath/cucumber-html-reports/overview-features.html"
+  }
+}
+
+task loadtestRun(type: JavaExec) {
+  classpath = sourceSets.test.runtimeClasspath
+  main = "io.gatling.app.Gatling"
+  doFirst {
+    group = 'Web Tests'
+    description = 'Run Gatling Tests'
+    println "Running simulation [${SIM_NAME}]"
+    new File("${buildDir}/reports/gatling").mkdirs()
+    args = [
+      '-s', "${SIM_NAME}",
+      '-rf', "${buildDir}/reports/gatling"
+    ]
+    //  systemProperty "karate.options", System.getProperty("karate.options")
+    systemProperties System.properties
   }
 }
 
