@@ -45,6 +45,7 @@ public class ConsumerController {
         airasiaConcurrency.incrementAndGet();
       }
 
+      Thread.sleep(100);
       s.release();
 
       if ("airasia".equals(queueId)) {
