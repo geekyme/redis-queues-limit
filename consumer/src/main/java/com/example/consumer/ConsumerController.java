@@ -7,6 +7,7 @@ import org.redisson.api.RSemaphore;
 import org.redisson.api.RedissonClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,10 @@ import io.micrometer.core.instrument.Counter;
 
 @RestController
 public class ConsumerController {
+
+  @Value("consumer_processing_delay")
+  long delay;
+
   private Logger logger = LoggerFactory.getLogger(ConsumerController.class);
   private RedissonClient redisson;
   private AtomicInteger airasiaConcurrency;
@@ -45,7 +50,7 @@ public class ConsumerController {
         airasiaConcurrency.incrementAndGet();
       }
 
-      Thread.sleep(1000);
+      Thread.sleep(delay);
       s.release();
 
       if ("airasia".equals(queueId)) {
