@@ -18,6 +18,10 @@ A proof-of-concept to show how redis is a viable option for the following use ca
 
 ![Grafana concurrency](./grafana_concurrency.png)
 
+6. Observe the queue build up
+
+![Redis queue](./redis_queue.png)
+
 ## Test with postman / cURL
 
 Queue a job:
