@@ -14,10 +14,10 @@ import org.springframework.context.annotation.Configuration;
 public class ProducerConfig {
   Logger logger = LoggerFactory.getLogger(ProducerConfig.class);
 
-  @Value("airasia_token_bucket")
+  @Value("${application.airasia_token_bucket}")
   private int airAsiaTokenBucketCount;
 
-  @Value("lionair_token_bucket")
+  @Value("${application.lionair_token_bucket}")
   private int lionAirTokenBucketCount;
 
   @Autowired

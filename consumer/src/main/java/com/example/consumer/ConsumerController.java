@@ -18,7 +18,7 @@ import io.micrometer.core.instrument.Counter;
 @RestController
 public class ConsumerController {
 
-  @Value("consumer_processing_delay")
+  @Value("${application.consumer_processing_delay}")
   long delay;
 
   private Logger logger = LoggerFactory.getLogger(ConsumerController.class);
