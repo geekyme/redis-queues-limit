@@ -1,0 +1,71 @@
+import net.masterthought.cucumber.ReportBuilder
+import org.apache.commons.io.FileUtils
+
+buildscript {
+  dependencies {
+    classpath "net.masterthought:cucumber-reporting:3.8.0"
+    classpath "commons-io:commons-io:2.5"
+  }
+}
+
+plugins {
+    id 'java'
+}
+
+ext {
+    karateVersion = '0.9.5'
+}
+
+dependencies {
+    testCompile 'org.junit.jupiter:junit-jupiter-api:5.4.2'
+    testCompile "com.intuit.karate:karate-junit5:${karateVersion}"
+    testCompile "com.intuit.karate:karate-apache:${karateVersion}"
+    testCompile "net.masterthought:cucumber-reporting:3.8.0"
+}
+
+sourceSets {
+    test {
+        resources {
+            srcDir file('src/test/java')
+            exclude '**/*.java'
+        }
+    }
+}
+
+task testReport {
+  doLast {
+    println "Generating Karate reports..."
+
+    def file_ext = ["json"] as String[]
+    Collection<File> jsonFiles = FileUtils.listFiles(new File("$buildDir/surefire-reports"), file_ext, true)
+    List<String> jsonPaths = new ArrayList(jsonFiles.size())
+    jsonFiles.each { file -> jsonPaths.add(file.getAbsolutePath()) }
+    net.masterthought.cucumber.Configuration config = new net.masterthought.cucumber.Configuration(new File("$buildDir"), "ins-insurance-automation")
+    ReportBuilder reportBuilder = new ReportBuilder(jsonPaths, config)
+    reportBuilder.generateReports()
+    println "Report is generated at file://$config.reportDirectory.absolutePath/cucumber-html-reports/overview-features.html"
+  }
+}
+
+test {
+    useJUnitPlatform()
+    systemProperty "karate.options", System.properties.getProperty("karate.options")
+    systemProperty "karate.env", System.properties.getProperty("karate.env")
+    outputs.upToDateWhen { false }
+    finalizedBy(testReport)
+}
+
+
+repositories {
+    mavenCentral()
+    // mavenLocal()
+}
+
+task karateDebug(type: JavaExec) {
+    classpath = sourceSets.test.runtimeClasspath
+    main = 'com.intuit.karate.cli.Main'
+}
+
+tasks.withType(Test) {
+    maxParallelForks = Runtime.runtime.availableProcessors()
+}
