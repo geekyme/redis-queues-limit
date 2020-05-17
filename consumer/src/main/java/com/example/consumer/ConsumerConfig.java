@@ -10,7 +10,7 @@ import io.micrometer.core.instrument.MeterRegistry;
 @Configuration
 public class ConsumerConfig {
   @Bean
-  public AtomicInteger airasiaExecutions(MeterRegistry meterRegistry) {
-    return meterRegistry.gauge("airasia.executions", new AtomicInteger());
+  public AtomicInteger airasiaConcurrency(MeterRegistry meterRegistry) {
+    return meterRegistry.gauge("airasia.concurrency", new AtomicInteger(0));
   }
 }

@@ -10,13 +10,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.micrometer.core.instrument.Counter;
+
 @RestController
 public class ConsumerController {
   private RedissonClient redisson;
-  private AtomicInteger airasiaExecutions;
+  private AtomicInteger airasiaConcurrency;
 
-  public ConsumerController(AtomicInteger airasiaExecutions, RedissonClient redisson) {
-    this.airasiaExecutions = airasiaExecutions;
+  public ConsumerController(AtomicInteger airasiaConcurrency, RedissonClient redisson) {
+    this.airasiaConcurrency = airasiaConcurrency;
     this.redisson = redisson;
   }
 
@@ -36,12 +38,14 @@ public class ConsumerController {
       String item = set.pollLast();
 
       if ("airasia".equals(queueId)) {
-        airasiaExecutions.incrementAndGet();
+        airasiaConcurrency.incrementAndGet();
       }
 
-      Thread.sleep(3000);
-
       s.release();
+
+      if ("airasia".equals(queueId)) {
+        airasiaConcurrency.decrementAndGet();
+      }
 
       return item;
     } else {
