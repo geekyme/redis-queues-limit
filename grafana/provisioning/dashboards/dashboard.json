@@ -71,7 +71,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Panel Title",
+      "title": "Concurrency per instance",
       "tooltip": {
         "shared": true,
         "sort": 0,
