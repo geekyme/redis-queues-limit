@@ -15,10 +15,10 @@ public class ProducerConfig {
   Logger logger = LoggerFactory.getLogger(ProducerConfig.class);
 
   @Value("airasia_token_bucket")
-  private String airAsiaTokenBucketCount;
+  private int airAsiaTokenBucketCount;
 
   @Value("lionair_token_bucket")
-  private String lionAirTokenBucketCount;
+  private int lionAirTokenBucketCount;
 
   @Autowired
   private RedissonClient redisson;
