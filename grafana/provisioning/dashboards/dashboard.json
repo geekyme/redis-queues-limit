@@ -2,6 +2,7 @@
   "annotations": {
     "list": [
       {
+        "$$hashKey": "object:33",
         "builtIn": 1,
         "datasource": "-- Grafana --",
         "enable": true,
@@ -15,7 +16,6 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 1,
   "links": [],
   "panels": [
     {
@@ -60,7 +60,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rate(airasia_executions[1m]) * 60",
+          "expr": "airasia_concurrency",
           "instant": false,
           "interval": "",
           "legendFormat": "",
@@ -135,10 +135,10 @@
     ]
   },
   "timezone": "",
-  "title": "Airasia execution rate",
+  "title": "Airasia Concurrency",
   "uid": "_xxCrJRMz",
   "variables": {
     "list": []
   },
-  "version": 2
+  "version": 1
 }
