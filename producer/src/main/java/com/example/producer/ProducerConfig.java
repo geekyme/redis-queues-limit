@@ -7,19 +7,26 @@ import org.redisson.api.RedissonClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class ProducerConfig {
   Logger logger = LoggerFactory.getLogger(ProducerConfig.class);
 
+  @Value("airasia_token_bucket")
+  private String airAsiaTokenBucketCount;
+
+  @Value("lionair_token_bucket")
+  private String lionAirTokenBucketCount;
+
   @Autowired
   private RedissonClient redisson;
 
   @PostConstruct
   public void initTokenBuckets() {
-    initTokenBucket(redisson, 30, "airasia_token_bucket");
-    initTokenBucket(redisson, 30, "lionair_token_bucket");
+    initTokenBucket(redisson, airAsiaTokenBucketCount, "airasia_token_bucket");
+    initTokenBucket(redisson, lionAirTokenBucketCount, "lionair_token_bucket");
   }
   
   private void initTokenBucket(RedissonClient redisson, int count, String queueId) {
