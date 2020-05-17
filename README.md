@@ -5,10 +5,6 @@ A proof-of-concept to show how redis is a viable option for the following use ca
 - distributed queue / job scheduler
 - controlled outgoing calls via semaphores
 
-### Setup
-
-`docker-compose up`
-
 ## Running load tests and observing concurrency
 
 1. Install [k6](https://k6.io/docs/getting-started/installation)
