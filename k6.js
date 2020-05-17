@@ -5,7 +5,7 @@ export default function () {
   let url1 = "http://localhost:8081/queueJob";
   let payload1 = JSON.stringify({
     queueId: "airasia",
-    name: "spec1",
+    name: "spec" + Date.now() + Math.random() * 1000, // random enough
     score: 1.0,
   });
 
