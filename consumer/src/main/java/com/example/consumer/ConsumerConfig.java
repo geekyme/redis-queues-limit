@@ -8,6 +8,7 @@ import javax.annotation.PostConstruct;
 
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -21,9 +22,12 @@ public class ConsumerConfig {
   @Autowired
   private MeterRegistry meterRegistry;
 
+  @Value("${application.airasia.threads}")
+  private int airasiaFetcherThreads;
+
   @PostConstruct
   public void initFetchers() {
-    initAirAsiaFetcher(10);
+    initAirAsiaFetcher(airasiaFetcherThreads);
   }
 
   private void initAirAsiaFetcher(int threads) {
