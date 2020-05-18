@@ -47,13 +47,15 @@ public class AirAsiaJob implements Runnable {
       airasiaConcurrency.decrementAndGet();
 
       // get next job immediately
-      executor.submit(
-        new AirAsiaJob(executor, redisson, airasiaConcurrency)
-      );
+      fetchNext(0);
     } else {
       logger.info("not processing");
       // get next job later
-      executor.schedule(new AirAsiaJob(executor, redisson, airasiaConcurrency), delayMs, TimeUnit.MILLISECONDS);
+      fetchNext(delayMs);
     }
+  }
+
+  private void fetchNext(long delayMs) {
+    executor.schedule(new AirAsiaJob(executor, redisson, airasiaConcurrency), delayMs, TimeUnit.MILLISECONDS);
   }
 }
