@@ -1,6 +1,7 @@
 package com.example.consumer;
 
-import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.redisson.api.RScoredSortedSet;
@@ -11,12 +12,13 @@ import org.slf4j.LoggerFactory;
 
 public class AirAsiaJob implements Runnable {
   public static String queueId = "airasia";
+  private static long delayMs = 1000;
   private Logger logger = LoggerFactory.getLogger(AirAsiaJob.class);
-  private ExecutorService executor;
+  private ScheduledExecutorService executor;
   private RedissonClient redisson;
   private AtomicInteger airasiaConcurrency;
 
-  public AirAsiaJob(ExecutorService executor, RedissonClient redisson, AtomicInteger airasiaConcurrency) {
+  public AirAsiaJob(ScheduledExecutorService executor, RedissonClient redisson, AtomicInteger airasiaConcurrency) {
     this.executor = executor;
     this.redisson = redisson;
     this.airasiaConcurrency = airasiaConcurrency;
@@ -36,21 +38,22 @@ public class AirAsiaJob implements Runnable {
       logger.info("processing " + item);
       
       try {
-        Thread.sleep(1000); // artificial processing delay
+        Thread.sleep(delayMs); // artificial processing delay
       } catch (Exception e) {
         logger.info("processing error " + item);
       }
       s.release();
 
       airasiaConcurrency.decrementAndGet();
+
+      // get next job immediately
+      executor.submit(
+        new AirAsiaJob(executor, redisson, airasiaConcurrency)
+      );
     } else {
       logger.info("not processing");
+      // get next job later
+      executor.schedule(new AirAsiaJob(executor, redisson, airasiaConcurrency), delayMs, TimeUnit.MILLISECONDS);
     }
-    fetchNext();
-  }
-  public void fetchNext() {
-    executor.submit(
-      new AirAsiaJob(executor, redisson, airasiaConcurrency)
-    );
   }
 }
