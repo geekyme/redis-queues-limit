@@ -49,6 +49,7 @@ curl --request POST \
 
 ## WIP
 
+- More error handling: unlock job concurrency when thread dies / instance dies
 - Pending addition of [pumba](https://github.com/alexei-led/pumba) to simulate failures
 - Fix the karate loadtests, somehow its not triggering load in the same behavior as k6
 
