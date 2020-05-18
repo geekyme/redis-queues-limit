@@ -43,11 +43,11 @@ public class AirAsiaJob implements Runnable {
         } catch (Exception e) {
           logger.info("processing error " + item);
         }
-        s.release();
   
         airasiaConcurrency.decrementAndGet();
       }
 
+      s.release();
       // get next job immediately
       fetchNext(0);
     } else {
