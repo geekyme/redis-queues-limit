@@ -37,13 +37,6 @@ curl --request POST \
 }'
 ```
 
-Poll for a job:
-
-```
-curl --request POST \
-  --url http://localhost:8080/pollJob/airasia
-```
-
 ## WIP
 
 - Pending addition of [pumba](https://github.com/alexei-led/pumba) to simulate failures

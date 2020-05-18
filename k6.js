@@ -19,12 +19,4 @@ export default function () {
   check(res1, {
     "queue is status 200": (r) => r.status === 200,
   });
-
-  let url2 = "http://localhost:8080/pollJob/airasia";
-
-  let res2 = http.post(url2, "", {});
-
-  check(res2, {
-    "poll is status 200": (r) => r.status === 200,
-  });
 }
