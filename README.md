@@ -2,8 +2,10 @@
 
 A proof-of-concept to show how redis is a viable option for the following use case:
 
+- multiple job queues (lionair, airasia)
+- multiple consumer pools reading from queues
 - distributed queue / job scheduler
-- controlled outgoing calls via semaphores
+- max concurrency of jobs being processed per queue (example: lionair = 20 jobs, airasia = 30 jobs concurrently)
 
 ## Running load tests and observing concurrency
 
@@ -14,7 +16,7 @@ A proof-of-concept to show how redis is a viable option for the following use ca
 
 ![Redis concurrency](./redis_concurrency.png)
 
-5. Observe almost equal distribution of load on [grafana](http://localhost:3000/d/_xxCrJRMz/airasia-concurrency?panelId=2&edit&fullscreen&orgId=1&refresh=5s).
+5. Observe distribution of load on [grafana](http://localhost:3000/d/1w-O5PgMz/airline-concurrency-poc?orgId=1&refresh=5s).
 
 ![Grafana concurrency](./grafana_concurrency.png)
 

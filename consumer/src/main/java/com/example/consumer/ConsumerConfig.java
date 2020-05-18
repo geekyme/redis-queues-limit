@@ -35,7 +35,7 @@ public class ConsumerConfig {
 
   private void initAirAsiaFetcher(int threads) {
     ScheduledExecutorService executor = Executors.newScheduledThreadPool(threads);
-    AtomicInteger airasiaConcurrency = meterRegistry.gauge("airasia.concurrency", new AtomicInteger(0));
+    AtomicInteger airasiaConcurrency = meterRegistry.gauge("airasia_concurrency", new AtomicInteger(0));
 
     for (int i = 0; i < threads; i++) {
       executor.submit(new AirAsiaJob(executor, redisson, airasiaConcurrency));
@@ -44,7 +44,7 @@ public class ConsumerConfig {
 
   private void initLionAirFetcher(int threads) {
     ScheduledExecutorService executor = Executors.newScheduledThreadPool(threads);
-    AtomicInteger lionairConcurrency = meterRegistry.gauge("lionair.concurrency", new AtomicInteger(0));
+    AtomicInteger lionairConcurrency = meterRegistry.gauge("lionair_concurrency", new AtomicInteger(0));
 
     for (int i = 0; i < threads; i++) {
       executor.submit(new LionAirJob(executor, redisson, lionairConcurrency));
