@@ -22,22 +22,33 @@ A proof-of-concept to show how redis is a viable option for the following use ca
 
 ![Redis queue](./redis_queue.png)
 
+## Development
+
+1. Make your code changes
+2. Rebuild changed code - `docker-compose build`
+3. Bring up the entire setup - `docker-compose up`
+
+```
+
 ## Test with postman / cURL
 
 Queue a job:
 
 ```
+
 curl --request POST \
-  --url http://localhost:8081/queueJob \
-  --header 'content-type: application/json' \
-  --data '{
-	"queueId": "airasia",
-	"name": "spec2",
-	"score": 2.1
+ --url http://localhost:8081/queueJob \
+ --header 'content-type: application/json' \
+ --data '{
+"queueId": "airasia",
+"name": "spec2",
+"score": 2.1
 }'
+
 ```
 
 ## WIP
 
 - Pending addition of [pumba](https://github.com/alexei-led/pumba) to simulate failures
 - Fix the karate loadtests, somehow its not triggering load in the same behavior as k6
+```
