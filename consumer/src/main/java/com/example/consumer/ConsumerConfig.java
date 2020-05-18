@@ -1,7 +1,13 @@
 package com.example.consumer;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import javax.annotation.PostConstruct;
+
+import org.redisson.api.RedissonClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -9,8 +15,23 @@ import io.micrometer.core.instrument.MeterRegistry;
 
 @Configuration
 public class ConsumerConfig {
-  @Bean
-  public AtomicInteger airasiaConcurrency(MeterRegistry meterRegistry) {
-    return meterRegistry.gauge("airasia.concurrency", new AtomicInteger(0));
+  @Autowired
+  private RedissonClient redisson;
+
+  @Autowired
+  private MeterRegistry meterRegistry;
+
+  @PostConstruct
+  public void initFetchers() {
+    initAirAsiaFetcher(10);
+  }
+
+  private void initAirAsiaFetcher(int threads) {
+    ExecutorService executor = Executors.newFixedThreadPool(threads);
+    AtomicInteger airasiaConcurrency = meterRegistry.gauge("airasia.concurrency", new AtomicInteger(0));
+
+    for (int i = 0; i < threads; i++) {
+      executor.submit(new AirAsiaJob(executor, redisson, airasiaConcurrency));
+    }
   }
 }
