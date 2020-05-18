@@ -24,9 +24,13 @@ public class ConsumerConfig {
   @Value("${application.airasia.threads}")
   private int airasiaFetcherThreads;
 
+  @Value("${application.lionair.threads}")
+  private int lionairFetcherThreads;
+
   @PostConstruct
   public void initFetchers() {
     initAirAsiaFetcher(airasiaFetcherThreads);
+    initLionAirFetcher(lionairFetcherThreads);
   }
 
   private void initAirAsiaFetcher(int threads) {
@@ -35,6 +39,15 @@ public class ConsumerConfig {
 
     for (int i = 0; i < threads; i++) {
       executor.submit(new AirAsiaJob(executor, redisson, airasiaConcurrency));
+    }
+  }
+
+  private void initLionAirFetcher(int threads) {
+    ScheduledExecutorService executor = Executors.newScheduledThreadPool(threads);
+    AtomicInteger lionairConcurrency = meterRegistry.gauge("lionair.concurrency", new AtomicInteger(0));
+
+    for (int i = 0; i < threads; i++) {
+      executor.submit(new LionAirJob(executor, redisson, lionairConcurrency));
     }
   }
 }

@@ -2,9 +2,14 @@ import http from "k6/http";
 import { check } from "k6";
 
 export default function () {
-  let url1 = "http://localhost:8081/queueJob";
-  let payload1 = JSON.stringify({
-    queueId: "airasia",
+  queueJob("airasia");
+  queueJob("lionair");
+}
+
+function queueJob(queueId) {
+  let url = "http://localhost:8081/queueJob";
+  let payload = JSON.stringify({
+    queueId: queueId,
     name: "spec" + Date.now() + Math.random() * 1000, // random enough
     score: 1.0,
   });
@@ -15,8 +20,8 @@ export default function () {
     },
   };
 
-  let res1 = http.post(url1, payload1, params);
-  check(res1, {
+  let res = http.post(url, payload, params);
+  check(res, {
     "queue is status 200": (r) => r.status === 200,
   });
 }
