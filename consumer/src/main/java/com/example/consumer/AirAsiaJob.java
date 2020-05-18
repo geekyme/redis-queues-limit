@@ -33,18 +33,20 @@ public class AirAsiaJob implements Runnable {
       RScoredSortedSet<String> set = redisson.getScoredSortedSet(queueId);
       
       String item = set.pollLast();
-      
-      airasiaConcurrency.incrementAndGet();
-      logger.info("processing " + item);
-      
-      try {
-        Thread.sleep(delayMs); // artificial processing delay
-      } catch (Exception e) {
-        logger.info("processing error " + item);
-      }
-      s.release();
 
-      airasiaConcurrency.decrementAndGet();
+      if (item != null) {
+        airasiaConcurrency.incrementAndGet();
+        logger.info("processing " + item);
+        
+        try {
+          Thread.sleep(delayMs); // artificial processing delay
+        } catch (Exception e) {
+          logger.info("processing error " + item);
+        }
+        s.release();
+  
+        airasiaConcurrency.decrementAndGet();
+      }
 
       // get next job immediately
       fetchNext(0);

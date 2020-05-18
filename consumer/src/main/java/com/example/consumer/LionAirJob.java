@@ -33,18 +33,20 @@ public class LionAirJob implements Runnable {
       RScoredSortedSet<String> set = redisson.getScoredSortedSet(queueId);
       
       String item = set.pollLast();
-      
-      lionairConcurrency.incrementAndGet();
-      logger.info("processing " + item);
-      
-      try {
-        Thread.sleep(delayMs); // artificial processing delay
-      } catch (Exception e) {
-        logger.info("processing error " + item);
-      }
-      s.release();
 
-      lionairConcurrency.decrementAndGet();
+      if (item != null) {
+        lionairConcurrency.incrementAndGet();
+        logger.info("processing " + item);
+        
+        try {
+          Thread.sleep(delayMs); // artificial processing delay
+        } catch (Exception e) {
+          logger.info("processing error " + item);
+        }
+        s.release();
+  
+        lionairConcurrency.decrementAndGet();
+      }
 
       // get next job immediately
       fetchNext(0);
