@@ -55,3 +55,15 @@ services:
       - consumer
     ports:
       - "8080:8080"
+  
+  prometheus-statsD:
+    image: prom/statsd-exporter
+    container_name: prometheus_statsD_exporter
+    ports:
+      - 9102:9102
+      - 18125:9125
+      - 18125:9125/udp
+    command:
+      - --statsd.mapping-config=/tmp/statsd_mapping.yml
+    volumes:
+      - ./statsd_mapping.yml:/tmp/statsd_mapping.yml
