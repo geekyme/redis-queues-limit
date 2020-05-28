@@ -33,7 +33,6 @@ public class AirAsiaJob implements Runnable {
       RScoredSortedSet<String> set = redisson.getScoredSortedSet(queueId);
       
       String item = set.pollLast();
-
       if (item != null) {
         airasiaConcurrency.incrementAndGet();
         logger.info("processing " + item);
@@ -46,7 +45,6 @@ public class AirAsiaJob implements Runnable {
   
         airasiaConcurrency.decrementAndGet();
       }
-
       s.release();
       // get next job immediately
       fetchNext(0);
